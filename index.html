@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>METAWADEE GROUP - AI Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+        /*********************************************
+       ADD BELOW STYLES IN SOME .CSS FILE
+                   eg: STYLE.CSS
+    **********************************************/
+    *, html{
+        scroll-behavior: smooth;
+    }
+
+    *, *:after, *:before {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    /***************************
+                    DEFAULT
+    ****************************/
+    body{
+        margin:0;
+        overflow-x:hidden !important;
+        font-family: 'Montserrat', sans-serif;
+        color: #fff;
+        
+        /* Background Image Styles */
+        background-color: black; /* Set background to black to show letterboxing */
+        background-image: url('WhatsApp Image 2025-05-28 at 16.57.33_f396b162.jpg'); /* */
+        background-size: 600px; /* */
+        background-position: center center;
+        background-repeat: no-repeat; /* */
+        background-attachment: fixed;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    a{
+        text-decoration:none !important;
+        min-width: fit-content;
+        width: fit-content;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
+    }
+
+    li{
+        list-style:none;
+    }
+
+    .btn{
+        padding:0.7rem 1rem;
+        text-decoration:none;
+        color:inherit;
+        position:relative;
+    }
+
+    .btn_1{
+        display:block;
+        border-radius:5px;
+        background-color:#0a2c7b;
+    }
+
+    .btn_1:after{
+        content:"\f178";
+        font-family:"FontAwesome";
+        margin-left:5px;
+    }
+
+    /* Styles for the Landbot container to mimic the old chat box appearance */
+    .landbot-container-wrapper {
+        background-color:rgba(255, 255, 255, 0.9);
+        max-width:350px;
+        width:100%;
+        height:600px;
+        border-radius:6px;
+        box-shadow:0px 6px 16px -6px rgba(1,1,1,0.6);
+        overflow:hidden;
+        color:#1e1e1e;
+        text-align:left;
+        position:relative;
+        z-index:11;
+        margin: auto;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+    
+    .landbot-container-wrapper.show {
+        opacity: 1;
+    }
+
+    /* Style for the Landbot iframe itself */
+    #myLandbot {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    /* Video Overlay Styles */
+    #video-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black; /* Solid black background for video letterboxing */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        transition: opacity 1s ease-out;
+    }
+
+    #video-overlay.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    #intro-video {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* This is key: ensures the video is fully visible within its container */
+        background-color: black; /* Ensures black bars if aspect ratio doesn't match */
+    }
+
+    @media (max-width:920px){
+        .landbot-container-wrapper {
+            max-width:350px;
+            width:100%;
+            height: 600px;;
+        }
+    }
+
+    /*********************************************
+       ADD BELOW STYLES IN SOME .CSS FILE
+                   eg: ANIMATE.CSS
+    **********************************************/
+    .up_down{
+        animation: up_down 2s infinite;
+    }
+
+    @keyframes up_down {
+        50%{
+            transform:scale(1.1);
+            opacity:1;
+        }
+        100%{
+            transform:scale(1);
+            opacity:0.5;
+        }  
+    }
+
+
+    .rotate{
+        animation: rotate 1s infinite;
+    }
+
+    @keyframes rotate {
+        50% {transform: rotateY(360deg);}
+        100% {transform: rotateY(0deg);}
+    }
+
+
+    .blur{
+        animation: blur 2s linear;
+    }
+
+    @keyframes blur{
+        0%{  
+            filter: blur(6px);
+            opacity:0.7;
+        }
+        100%{
+            filter: blur(0px);
+            opacity:1;
+        }
+    }
+
+
+
+    .typing {
+      position: relative;
+    }
+    .typing span {
+      content: "";
+      -webkit-animation: blink 1.5s infinite;
+              animation: blink 1.5s infinite;
+      -webkit-animation-fill-mode: both;
+              animation-fill-mode: both;
+      height: 10px;
+      width: 10px;
+      background: #3b5998;
+      position: absolute;
+      left: 0;
+      top: 0;
+      border-radius: 50%;
+    }
+    .typing span:nth-child(2) {
+      -webkit-animation-delay: 0.2s;
+              animation-delay: 0.2s;
+      margin-left: 15px;
+    }
+    .typing span:nth-child(3) {
+      -webkit-animation-delay: 0.4s;
+              animation-delay: 0.4s;
+      margin-left: 30px;
+    }
+
+    @-webkit-keyframes blink {
+      0% {
+        opacity: 0.1;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0.1;
+      }
+    }
+
+    @keyframes blink {
+      0% {
+        opacity: 0.1;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0.1;
+      }
+    }
+
+
+    .bubble_anim{
+        animation: bubble-anim 0.3s ease-out 1;
+    }
+
+    @-webkit-keyframes bubble-anim {
+      0% {
+        -webkit-transform: scale(1);
+        transform: scale(1); }
+
+      20% {
+        -webkit-transform: scaleY(0.95) scaleX(1.05);
+        transform: scaleY(0.95) scaleX(1.05); }
+
+      48% {
+        -webkit-transform: scaleY(1.1) scaleX(0.9);
+        transform: scaleY(1.1) scaleX(0.9); }
+
+      68% {
+        -webkit-transform: scaleY(0.98) scaleX(1.02);
+        transform: scaleY(0.98) scaleX(1.02); }
+
+      80% {
+        -webkit-transform: scaleY(1.02) scaleX(0.98);
+        transform: scaleY(1.02) scaleX(0.98); }
+
+      97%, 100% {
+        -webkit-transform: scale(1);
+        transform: scale(1); } }
+
+    @keyframes bubble-anim {
+      0% {
+        -webkit-transform: scale(1);
+        transform: scale(1); }
+
+      20% {
+        -webkit-transform: scaleY(0.95) scaleX(1.05);
+        transform: scaleY(0.95) scaleX(1.05); }
+
+      48% {
+        -webkit-transform: scaleY(1.1) scaleX(0.9);
+        transform: scaleY(1.1) scaleX(0.9); }
+
+      68% {
+        -webkit-transform: scaleY(0.98) scaleX(1.02);
+        transform: scaleY(0.98) scaleX(1.02); }
+
+      80% {
+        -webkit-transform: scaleY(1.02) scaleX(0.98);
+        transform: scaleY(1.02) scaleX(0.98); }
+
+      97%, 100% {
+        -webkit-transform: scale(1);
+        transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <div id="video-overlay">
+<video id="intro-video" autoplay playsinline>
+            <source src="video0.mp4" type="video/mp4"> 
+              الفيديو بيحمل الصبر        </video>
+    </div>
+
+    <div class="landbot-container-wrapper">
+        <script SameSite="None; Secure" type="module" src="https://cdn.landbot.io/landbot-3/landbot-3.0.0.mjs"></script>
+        <div id="myLandbot"></div>
+        <script type="module">
+          var myLandbot = new Landbot.Container({
+            container: '#myLandbot',
+            configUrl: 'https://storage.googleapis.com/landbot.online/v3/H-2961174-XBY8DEZ5Q294X020/index.json',
+          });
+        </script>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const videoOverlay = document.getElementById('video-overlay');
+            const introVideo = document.getElementById('intro-video');
+            const landbotContainer = document.querySelector('.landbot-container-wrapper');
+
+            // Set the video source (make sure the path is correct)
+            // introVideo.src = 'your-intro-video.mp4'; 
+
+            // Event listener for when the video ends
+            introVideo.addEventListener('ended', function() {
+                // Hide the video overlay with a fade-out effect
+                videoOverlay.classList.add('hidden');
+                
+                // Show the Landbot container after the video fades out
+                setTimeout(() => {
+                    landbotContainer.classList.add('show');
+                }, 1000); // This delay should match the transition time of video-overlay opacity
+            });
+
+            // Fallback for immediate chat display if video fails to load or play
+            introVideo.addEventListener('error', function() {
+                console.error('Video failed to load or play. Displaying chat immediately.');
+                videoOverlay.style.display = 'none'; // Hide video overlay immediately
+                landbotContainer.classList.add('show'); // Show chat immediately
+            });
+        });
+    </script>
+
+</body>
+</html>
